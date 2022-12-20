@@ -1,4 +1,4 @@
-// Chart 객체에 넘겨줄 차트에 대한 정보들을 정의한 객체. 명품 html5의 7장 프로토타입 참고
+// Chart 객체에 넘겨줄 차트에 대한 정보들을 정의한 객체. 명품 html5의 7장 프로토타입 참고 
 var config = {
         // type은 차트 종류 지정 = horizontalBar (지하철 도착 정보를 사실적으로 표현하기 위함)
         type: 'horizontalBar', 
