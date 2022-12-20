@@ -1,5 +1,5 @@
 var port = 9001 // mosquitto의 디폴트 웹 포트
-var client = null; // null이면 연결되지 않았음
+var client = null; // null이면 연결되지 않았음 
 
 function startConnect() { // 접속을 시도하는 함수
 
