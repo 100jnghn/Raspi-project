@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+        <title>1971222 백종훈</title>
+        <meta charset="utf-8">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+        <script src="./static/mqttio5.js" type="text/javascript"></script>
+        <script src="./static/cam.js" type="text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" type="text/javascript"></script>
+        <script src="./static/myChart.js" type="text/javascript"></script>
+        <script>
+                window.onload = function() {
+                        // http://224..129:8080/에서 224...의 IP만 끊어내는 코드
+                        var url = new String(document.location);
+                        ip = (url.split("//"))[1]; // ip = "224...:8080/"
+                        ip = (ip.split(":"))[0]; // ip = "224..."
+                        document.getElementById("broker").value = ip
+
+                        //ID 입력받고 화면에 출력
+                        var res = prompt("ID 입력")
+                        document.getElementById("login").innerHTML = res + "님 안녕하세요!";
+                };
+        </script>
+
+        <script  type ="text/javascript">
+        document .addEventListener ("DOMContentLoaded", function () {
+                // 시간 출력을 위한 함수 실행
+                realTimer ();
+                // 0.5초에 한 번씩 시간 갱신.
+                setInterval (realTimer , 500 );
+        });
+        //현재 날짜와 시간을 실시간으로 보여준다.
+        function  realTimer () {
+                var x  = document .getElementById ("nowTimes");
+                        x .style .fontSize  = "15px";
+                        x .style .color  = "DodgerBlue";
+                const nowDate  = new Date ();
+                const year  = nowDate .getFullYear ();
+                const month = nowDate .getMonth () + 1 ;
+                const date  = nowDate .getDate ();
+                const hour  = nowDate .getHours ();
+                const min  = nowDate .getMinutes ();
+                const sec  = nowDate .getSeconds ();
+                document .getElementById ("nowTimes").innerHTML  = year  + "년" + addzero (month ) + "월
+" + addzero (date ) + "일&nbsp;" + hour  + ":" + addzero (min ) + ":" + addzero (sec );
+        }
+
+        // 한 자리수의 숫자인 경우 앞에 0을 붙인다.
+        function  addzero (num ) {
+                if (num  < 10 ) { num  = "0" + num ; }
+                return  num ;
+        }</script >
+
+
+</head>
+<body style="background-color: rgb(244,243,234);"> //웹 페이지 배경색 설정
+        <center><h1> <한성대입구역> </h1></center>
+        <hr>
+        <form id="connection-form">
+
+                <font size="2px">
+                <b>관리자 IP:</b>
+                <input id="broker" type="text" name="broker" value="">
+
+                <b> &nbsp;포트 번호 : 9001</b><br><br><br>
+                </font>
+
+                <center>
+                <font size="5px">
+                        <b><div id = "login">서버에 접속합니다.</div></b><br>
+                </font>
+                </center>
+
+                <p style="text-align:right;">
+                <b><span id="nowTimes" style="align-items: right"></span><b>
+                </p>
+
+                <center>
+                <input type="button" onclick="startConnect()" value="시작">
+                <input type="button" onclick="startDisconnect()" value="종료">
+                </center>
+        </form>
+        <hr>
+
+        <center>
+        <br>
+        <font size="3px" color="#E55555">
+                온도
+        </font>
+        <div id = "temparature" style="display:inline"></div> //온도 값을 받아와서 출력
+        <br>
+        <font size="3px" color="#4B6BC7">
+                습도
+        </font>
+        <div id = "humidity" style="display:inline"></div> //습도 값을 받아와서 출력
+
+        <br><div id="tempControl"></div> // 전송받은 메시지 출력
+        <form id="LED-control-form">
+
+        //on을 누르면 1값을 publish 하여 led on, off를 누르면 0값을 publish 하여 led off
+        <font size="2px">
+        <label>on<input type="radio" name="led" value="1" onchange="publish('led', this.value)"></label>
+        <label>off<input type="radio" name="led" value="0" checked onchange="publish('led', this.value)"><br><br></label>
+        </font>
+        </center>
+        </form>
+ <hr>
+        <center>
+        <h3>성신여대입구 --> 한성대입구 열차 도착 정보</h3>
+        <form id="subscribe-form"> //버튼 누르면 ultrasonic 토픽에 대해 subscribe/unsubscribe 
+                <input type="button" onclick="subscribe('ultrasonic')" value="측정시작"> //초음파 센서값 받아온다.
+                <input type="button" onclick="unsubscribe('ultrasonic')" value="측정중단"> //subscribe 중지
+        </form>
+        //받아온 초음파 센서값을 출력할 캔버스
+        <canvas id="canvas" width="600" height="150" style="background-color: #CAD0D7;"></canvas>
+        <div id="distance"></div>
+        <!-- <div id="messages"></div> -->
+        <br>
+        </center>
+        <hr>
+
+        <center>
+        <br>
+        <form id="camera-form"> //카메라가 찍은 사진 출력
+        <b>CCTV</b>
+                //버튼을 누르면 사진이 보인다. 다시 누르면 사진을 안보이게 감춘다.
+                <input type="button" onclick="recognize()" value="On/Off"> 
+
+        </form>
+        <br>
+        <canvas id="myCanvas" width="320" height="240" style="display:none"></canvas> //사진을 출력할 캔버스
+        </center>
+
+</body>
+</html>
