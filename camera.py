@@ -5,7 +5,7 @@ import cv2
 from PIL import Image, ImageFilter
 import numpy as np
 
-# 전역 변수 선언 및 초기화
+# 전역 변수 선언 및 초기화 
 fileName = ""
 stream = io.BytesIO()
 haar = cv2.CascadeClassifier('./haarCascades/haar-cascade-\
