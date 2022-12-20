@@ -1,6 +1,6 @@
 //웹 페이지에서 버튼을 누르면 이미지 전송
 
-var canvas;
+var canvas; 
 var context;
 var img;
 //load 이벤트 리스터 등록. 웹페이지가 로딩된 후 실행
