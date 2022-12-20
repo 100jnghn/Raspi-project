@@ -5,7 +5,7 @@ from datetime import datetime
 from adafruit_htu21d import HTU21D
 import busio
 
-#전역 변수 선언 및 초기화
+#전역 변수 선언 및 초기화 
 #초음파 센서 trig=20, echo=16
 trig = 20
 echo = 16
